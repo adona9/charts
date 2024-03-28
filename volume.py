@@ -6,22 +6,12 @@ import os
 from plotly.subplots import make_subplots
 
 
-ticker = 'OARK'
+ticker = 'AMDY'
 
 prices = pl.get_price(ticker)
+df = prices.reset_index()
 
-
-dividends_file = f'./data/{ticker}_dividends.csv'
-dividends = pd.read_csv(dividends_file) if os.path.exists(dividends_file) else pd.DataFrame(columns=['Date', 'Dividend'])
-dividends.set_index('Date', inplace=True)
-
-merged = pd.merge(prices, dividends, left_index=True, right_index=True, how='outer')
-
-df = merged.reset_index()
-dividends = dividends.reset_index()
-
-
-fig = make_subplots(rows=3, cols=1, shared_xaxes=True, vertical_spacing=0.01, row_heights=[60, 20, 20])
+fig = make_subplots(rows=3, cols=1, shared_xaxes=True, vertical_spacing=0.01, row_heights=[70, 15, 15])
 
 
 fig.add_trace(
@@ -37,8 +27,10 @@ fig.add_trace(
 fig.add_trace(
     go.Scatter(name='Open+Dividend',
                x=df['Date'], y=df['Open'] + df['Dividend'],
-               mode='markers',
-               marker=dict(size=12, color='black')),
+               mode='markers+text',
+               textposition='top center',
+               text=df['Dividend'],
+               marker=dict(size=12, color='white', line=dict(width=.5, color='black'))),
     row=1, col=1
 )
 
@@ -48,10 +40,10 @@ fig.add_trace(
 
 fig.add_trace(
     go.Bar(name='Dividend',
-           x=dividends['Date'], y=dividends['Dividend'],
+           x=df['Date'], y=df['Dividend'],
            opacity=.5,
-           text=dividends['Dividend'],
-           textposition='inside'
+           text=df['Dividend'],
+           textposition='auto'
            ),
     row=3, col=1)
 
@@ -63,12 +55,12 @@ fig.update_layout(
     title=ticker,
     xaxis_rangeslider_visible=False,
     yaxis_title=f'{ticker} Price',
-    shapes=[dict(
-        x0=dividend_date, x1=dividend_date, y0=0.33, y1=.66, xref='x', yref='paper',
-        line_width=.2) for dividend_date in dividends['Date']],
-    annotations=[dict(
-        x=row['Date'], y=0.02, xref='x', yref='paper',
-        showarrow=False, xanchor='center', text=row['Date'])
-        for index, row in dividends.iterrows()]
+    # shapes=[dict(
+    #     x0=dividend_date, x1=dividend_date, y0=0.33, y1=.66, xref='x', yref='paper',
+    #     line_width=.2) for dividend_date in dividends['Date']],
+    # annotations=[dict(
+    #     x=row['Date'], y=0.02, xref='x', yref='paper',
+    #     showarrow=False, xanchor='center', text=row['Date'])
+    #     for index, row in dividends.iterrows()]
 )
 fig.show()

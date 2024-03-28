@@ -51,7 +51,7 @@ Pay dates:    Mar  9, Apr  8, May  8, Jun  7, Jul  8, Aug  8, Sep  9, Oct  7, No
 ```
 From: https://www.yieldmaxetfs.com/distribution-schedule/
 
-### YMAX (y=31%) or YMAG (y=30%) or ULTY
+### YMAX (y=31%) or YMAG (y=30%) or ULTY (64%)
 ```
 BUY DATES:    Mar 13, Apr 16, May 14, Jun 13, Jul 16, Jul 14, Sep 17, Oct 15, Nov 13, Dec 17
 Ex-D dates:   Mar 14, Apr 17, May 15, Jun 14, Jul 17, Aug 15, Sep 18, Oct 16, Nov 14, Dec 18

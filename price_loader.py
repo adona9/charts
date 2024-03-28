@@ -24,13 +24,15 @@ def get_price(ticker_symbol, period='6mo'):
         local_data = yf.download(ticker_symbol, period=period)
         local_data.to_csv(data_file)
 
-    #ticker = yf.Ticker(ticker_symbol)
-    #divs = ticker.get_dividends()
-    # divs.index[0].tz_localize(None)
-    #for i, v in divs.items():
-    #    print(i, v)
-
-    return local_data
+    ticker = yf.Ticker(ticker_symbol)
+    divs = ticker.get_dividends()
+    d2 = pd.DataFrame({
+        'Date': [d.tz_localize(None) for d in divs.keys()],
+        'Dividend': divs.values
+    })
+    d2.set_index('Date', inplace=True)
+    merged = pd.merge(local_data, d2, left_index=True, right_index=True, how='outer')
+    return merged
 
 
 if __name__ == "__main__":
