@@ -6,7 +6,7 @@ import os
 from plotly.subplots import make_subplots
 
 
-ticker = 'SVOL'
+ticker = 'OARK'
 
 prices = pl.get_price(ticker)
 
@@ -21,7 +21,7 @@ df = merged.reset_index()
 dividends = dividends.reset_index()
 
 
-fig = make_subplots(rows=3, cols=1, shared_xaxes=True, vertical_spacing=0.03)
+fig = make_subplots(rows=3, cols=1, shared_xaxes=True, vertical_spacing=0.01, row_heights=[60, 20, 20])
 
 
 fig.add_trace(
@@ -33,18 +33,29 @@ fig.add_trace(
     go.Scatter(x=df['Date'], y=sma_20, mode='lines', name='20-day SMA', line=dict(color='orange'), opacity=.2),
     row=1, col=1
 )
+
 fig.add_trace(
-    go.Scatter(x=df['Date'], y=df['Open'] + df['Dividend'], name='Open+Dividend', mode='markers', marker=dict(color='black')),
+    go.Scatter(name='Open+Dividend',
+               x=df['Date'], y=df['Open'] + df['Dividend'],
+               mode='markers',
+               marker=dict(size=12, color='black')),
     row=1, col=1
 )
 
 fig.add_trace(
-    go.Bar(x=dividends['Date'], y=dividends['Dividend'], name='Dividend', opacity=.5, text=dividends['Dividend'], textposition='inside'),
-    row=3, col=1)
-
-fig.add_trace(
     go.Bar(x=df['Date'], y=df['Volume'], name='Volume', yaxis='y2',opacity=.5),
     row=2, col=1)
+
+fig.add_trace(
+    go.Bar(name='Dividend',
+           x=dividends['Date'], y=dividends['Dividend'],
+           opacity=.5,
+           text=dividends['Dividend'],
+           textposition='inside'
+           ),
+    row=3, col=1)
+
+
 
 fig.update_xaxes(showticklabels=False, row=3, col=1)
 
