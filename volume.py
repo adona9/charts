@@ -1,14 +1,14 @@
 import numpy as np
 import plotly.graph_objects as go
 import pandas as pd
+import price_loader as pl
 import os
 from plotly.subplots import make_subplots
 
 
 ticker = 'SVOL'
 
-prices = pd.read_csv(f'/home/alessandro/Downloads/{ticker}.csv')
-prices.set_index('Date', inplace=True)
+prices = pl.get_price(ticker)
 
 
 dividends_file = f'./data/{ticker}_dividends.csv'
