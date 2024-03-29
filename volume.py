@@ -6,13 +6,12 @@ import os
 from plotly.subplots import make_subplots
 
 
-ticker = 'AMDY'
+ticker = 'FBY'
 
 prices = pl.get_price(ticker)
 df = prices.reset_index()
 
 fig = make_subplots(rows=3, cols=1, shared_xaxes=True, vertical_spacing=0.01, row_heights=[70, 15, 15])
-
 
 fig.add_trace(
     go.Candlestick(x=df['Date'], open=df['Open'], high=df['High'], low=df['Low'], close=df['Close'], name=ticker),
@@ -30,7 +29,7 @@ fig.add_trace(
                mode='markers+text',
                textposition='top center',
                text=df['Dividend'],
-               marker=dict(size=12, color='white', line=dict(width=.5, color='black'))),
+               marker=dict(size=8, color='white', line=dict(width=.5, color='black'))),
     row=1, col=1
 )
 
@@ -48,8 +47,7 @@ fig.add_trace(
     row=3, col=1)
 
 
-
-fig.update_xaxes(showticklabels=False, row=3, col=1)
+fig.update_xaxes(row=3, col=1, dtick='D1',  ticklabelstep=7, ticks='outside')
 
 fig.update_layout(
     title=ticker,
