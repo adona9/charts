@@ -1,10 +1,6 @@
-import numpy as np
 import plotly.graph_objects as go
-import pandas as pd
-import price_loader as pl
-import os
 from plotly.subplots import make_subplots
-
+import price_loader as pl
 
 ticker = 'FBY'
 
@@ -34,7 +30,7 @@ fig.add_trace(
 )
 
 fig.add_trace(
-    go.Bar(x=df['Date'], y=df['Volume'], name='Volume', yaxis='y2',opacity=.5),
+    go.Bar(x=df['Date'], y=df['Volume'], name='Volume', yaxis='y2', opacity=.5),
     row=2, col=1)
 
 fig.add_trace(

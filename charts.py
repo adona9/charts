@@ -15,7 +15,6 @@ fig = go.Figure(data=[go.Candlestick(x=df['Date'],
                                      low=df['Low'],
                                      close=df['Close'])])
 
-
 fig.update_layout(
     title=ticker,
     yaxis_title=f'{ticker} Price',

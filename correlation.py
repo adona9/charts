@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 import price_loader as pl
 
 ticker_symbol = 'HYGW'
-#benchmark_tickers = ['^VIX','^SPX','UUP','^TNX','GLD','USO']
+# benchmark_tickers = ['^VIX','^SPX','UUP','^TNX','GLD','USO']
 benchmark_tickers = ['SVOL', 'HYGH', 'YMAX', 'YMAG', 'AMDY', 'OARK']
 
 sec = pl.get_price(ticker_symbol)

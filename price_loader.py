@@ -1,8 +1,7 @@
 import os
 import pandas as pd
-import pytz
 import yfinance as yf
-from datetime import datetime, timedelta
+from datetime import datetime
 
 DATA_FOLDER = './.data'
 
