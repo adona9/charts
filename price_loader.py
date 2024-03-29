@@ -1,12 +1,12 @@
 import os
 import pandas as pd
 import yfinance as yf
-from datetime import datetime
+from datetime import datetime, timedelta
 
 DATA_FOLDER = './.data'
 
 
-def get_price(ticker_symbol, period='6mo'):
+def get_price(ticker_symbol, period='200D'):
     data_file = f'{DATA_FOLDER}/{ticker_symbol}.csv'
     if os.path.exists(data_file):
         local_data = pd.read_csv(data_file)
@@ -25,6 +25,10 @@ def get_price(ticker_symbol, period='6mo'):
 
     ticker = yf.Ticker(ticker_symbol)
     divs = ticker.get_dividends()
+    end_date = datetime.today().strftime('%Y-%m-%d')
+    start_date = (datetime.today() - pd.Timedelta(period)).strftime('%Y-%m-%d')
+    divs = divs[(divs.index >= start_date) & (divs.index <= end_date)]
+
     d2 = pd.DataFrame({
         'Date': [d.tz_localize(None) for d in divs.keys()],
         'Dividend': divs.values
@@ -35,5 +39,5 @@ def get_price(ticker_symbol, period='6mo'):
 
 
 if __name__ == "__main__":
-    p = get_price('OARK')
+    p = get_price('OARK', '360D')
     print(p)

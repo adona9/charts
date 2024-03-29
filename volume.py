@@ -2,7 +2,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import price_loader as pl
 
-ticker = 'FBY'
+ticker = 'TSLY'
 
 prices = pl.get_price(ticker)
 df = prices.reset_index()
