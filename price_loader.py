@@ -2,7 +2,21 @@ import os
 import pandas as pd
 import yfinance as yf
 from datetime import datetime, timedelta
+from requests import Session
+from requests_cache import CacheMixin, SQLiteCache
+from requests_ratelimiter import LimiterMixin, MemoryQueueBucket
+from pyrate_limiter import Duration, RequestRate, Limiter
 
+
+class CachedLimiterSession(CacheMixin, LimiterMixin, Session):
+    pass
+
+
+session = CachedLimiterSession(
+    limiter=Limiter(RequestRate(2, Duration.SECOND * 5)),  # max 2 requests per 5 seconds
+    bucket_class=MemoryQueueBucket,
+    backend=SQLiteCache("yfinance.cache"),
+)
 DATA_FOLDER = './.data'
 
 
@@ -20,10 +34,10 @@ def get_price(ticker_symbol, period='200D'):
             local_data = union.groupby(union.index).first()
             local_data.to_csv(data_file)
     else:
-        local_data = yf.download(ticker_symbol, period=period)
+        local_data = yf.download(ticker_symbol, period=period, session=session)
         local_data.to_csv(data_file)
 
-    ticker = yf.Ticker(ticker_symbol)
+    ticker = yf.Ticker(ticker_symbol, session=session)
     divs = ticker.get_dividends()
     end_date = datetime.today().strftime('%Y-%m-%d')
     start_date = (datetime.today() - pd.Timedelta(period)).strftime('%Y-%m-%d')
@@ -39,5 +53,5 @@ def get_price(ticker_symbol, period='200D'):
 
 
 if __name__ == "__main__":
-    p = get_price('OARK', '360D')
+    p = get_price('SVOL', '360D')
     print(p)
