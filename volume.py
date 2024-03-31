@@ -2,7 +2,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import price_loader as pl
 
-ticker = 'TSLY'
+ticker = 'FBY'
 
 prices = pl.get_price(ticker)
 df = prices.reset_index()
@@ -10,7 +10,7 @@ df = prices.reset_index()
 fig = make_subplots(rows=3, cols=1, shared_xaxes=True, vertical_spacing=0.01, row_heights=[70, 15, 15])
 
 fig.add_trace(
-    go.Candlestick(x=df['Date'], open=df['Open'], high=df['High'], low=df['Low'], close=df['Close'], name=ticker),
+    go.Candlestick(x=df['Date'], open=df['Open'], high=df['High'], low=df['Low'], close=df['Close'], name='Price'),
     row=1, col=1)
 
 sma_20 = df['Close'].rolling(window=20).mean()
@@ -20,7 +20,7 @@ fig.add_trace(
 )
 
 fig.add_trace(
-    go.Scatter(name='Open+Dividend',
+    go.Scatter(name='Open+Dividend $',
                x=df['Date'], y=df['Open'] + df['Dividend'],
                mode='markers+text',
                textposition='top center',
@@ -33,12 +33,15 @@ fig.add_trace(
     go.Bar(x=df['Date'], y=df['Volume'], name='Volume', yaxis='y2', opacity=.5),
     row=2, col=1)
 
+df['Yield'] = 100 * df['Dividend'] / (df["Open"] + df["Dividend"])
+dividends =  df.dropna(subset=['Dividend'])
 fig.add_trace(
-    go.Bar(name='Dividend',
-           x=df['Date'], y=df['Dividend'],
+    go.Bar(name='Yield %',
+           x=dividends['Date'], y=dividends["Yield"],
            opacity=.5,
-           text=df['Dividend'],
-           textposition='auto'
+           text=round(dividends["Yield"], 3),
+           textposition='inside',
+           textfont=dict(size=18)
            ),
     row=3, col=1)
 
