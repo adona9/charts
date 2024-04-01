@@ -2,42 +2,49 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import price_loader as pl
 
-ticker = 'FBY'
+ticker = 'AMDY'
+u_ticker = 'AMD'
 
-prices = pl.get_price(ticker)
-df = prices.reset_index()
+price = pl.get_price(ticker)
+u_price = pl.get_price(u_ticker)
 
-fig = make_subplots(rows=3, cols=1, shared_xaxes=True, vertical_spacing=0.01, row_heights=[70, 15, 15])
+fig = make_subplots(rows=4, cols=1,
+                    shared_xaxes=True,
+                    vertical_spacing=0.01,
+                    row_heights=[70, 10, 10, 10])
 
 fig.add_trace(
-    go.Candlestick(x=df['Date'], open=df['Open'], high=df['High'], low=df['Low'], close=df['Close'], name='Price'),
+    go.Candlestick(x=price.index, open=price['Open'], high=price['High'], low=price['Low'], close=price['Close'], name='Price', yaxis='y1'),
     row=1, col=1)
 
-sma_20 = df['Close'].rolling(window=20).mean()
+sma_20 = price['Close'].rolling(window=20).mean()
 fig.add_trace(
-    go.Scatter(x=df['Date'], y=sma_20, mode='lines', name='20-day SMA', line=dict(color='orange'), opacity=.2),
-    row=1, col=1
-)
+    go.Scatter(x=price.index, y=sma_20, mode='lines', name='20-day SMA', line=dict(color='orange'), opacity=.2),
+    row=1, col=1)
+
+fig.add_trace(
+    go.Scatter(x=u_price.index, y=price['Close'].rolling(window=20).corr(u_price['Close']), mode='lines', name=f'20-day corr {u_ticker}', line=dict(color='lightgrey'), opacity=.75, yaxis='y2'),
+    row=4, col=1)
 
 fig.add_trace(
     go.Scatter(name='Open+Dividend $',
-               x=df['Date'], y=df['Open'] + df['Dividend'],
+               x=price.index, y=price['Open'] + price['Dividend'],
                mode='markers+text',
                textposition='top center',
-               text=df['Dividend'],
+               text=price['Dividend'],
                marker=dict(size=8, color='white', line=dict(width=.5, color='black'))),
     row=1, col=1
 )
 
 fig.add_trace(
-    go.Bar(x=df['Date'], y=df['Volume'], name='Volume', yaxis='y2', opacity=.5),
+    go.Bar(x=price.index, y=price['Volume'], name='Volume', yaxis='y2', opacity=.5),
     row=2, col=1)
 
-df['Yield'] = 100 * df['Dividend'] / (df["Open"] + df["Dividend"])
-dividends =  df.dropna(subset=['Dividend'])
+price['Yield'] = 100 * price['Dividend'] / (price['Open'] + price['Dividend'])
+dividends =  price.dropna(subset=['Dividend'])
 fig.add_trace(
     go.Bar(name='Yield %',
-           x=dividends['Date'], y=dividends["Yield"],
+           x=dividends.index, y=dividends["Yield"],
            opacity=.5,
            text=round(dividends["Yield"], 3),
            textposition='inside',
@@ -45,8 +52,10 @@ fig.add_trace(
            ),
     row=3, col=1)
 
-
-fig.update_xaxes(row=3, col=1, dtick='D1',  ticklabelstep=7, ticks='outside')
+fig.update_xaxes(row=1, col=1, dtick='M1')
+fig.update_xaxes(row=2, col=1, dtick='M1')
+fig.update_xaxes(row=3, col=1, dtick='M1')
+fig.update_xaxes(row=4, col=1, dtick='D1',  ticklabelstep=7, ticks='outside')
 
 fig.update_layout(
     title=ticker,
