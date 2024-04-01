@@ -24,8 +24,6 @@ def is_market_open():
 def get_end(latest_date):
     FRIDAY = 4
     now = pd.Timestamp(datetime.today())
-    if is_market_open():
-        return now
     d = pd.Timestamp(now.date())
     delta = d.day_of_week - FRIDAY if d.day_of_week > FRIDAY else 0
     return d - pd.Timedelta(days=delta)
@@ -39,10 +37,11 @@ def get_price(ticker_symbol, period='200D'):
         local_data.set_index('Date', inplace=True)
         latest_date = local_data.index.max()
         end_date = get_end(latest_date)
-        if latest_date < end_date:
-            recent = yf.download(ticker_symbol, start=latest_date, end=end_date)
+        if latest_date < end_date or is_market_open():
+            delta = end_date - latest_date
+            recent = yf.download(ticker_symbol, period=f'{delta.days}d')
             union = pd.concat([local_data, recent])
-            local_data = union.groupby(union.index).first()
+            local_data = union.groupby(union.index).last()
             local_data.to_csv(data_file)
     else:
         local_data = yf.download(ticker_symbol, period=period)
