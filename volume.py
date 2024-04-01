@@ -14,7 +14,9 @@ fig = make_subplots(rows=4, cols=1,
                     row_heights=[70, 10, 10, 10])
 
 fig.add_trace(
-    go.Candlestick(x=price.index, open=price['Open'], high=price['High'], low=price['Low'], close=price['Close'], name='Price', yaxis='y1'),
+    go.Candlestick(x=price.index, name='Price',
+                   open=price['Open'], high=price['High'], low=price['Low'], close=price['Close'],
+                   yaxis='y1'),
     row=1, col=1)
 
 sma_20 = price['Close'].rolling(window=20).mean()
@@ -23,7 +25,10 @@ fig.add_trace(
     row=1, col=1)
 
 fig.add_trace(
-    go.Scatter(x=u_price.index, y=price['Close'].rolling(window=20).corr(u_price['Close']), mode='lines', name=f'20-day corr {u_ticker}', line=dict(color='lightgrey'), opacity=.75, yaxis='y2'),
+    go.Scatter(x=u_price.index,
+               y=price['Close'].rolling(window=20).corr(u_price['Close']),
+               name=f'20-day corr {u_ticker}',
+               mode='lines',  line=dict(color='darkgrey'), opacity=.75, yaxis='y2'),
     row=4, col=1)
 
 fig.add_trace(

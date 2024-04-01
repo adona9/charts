@@ -1,23 +1,34 @@
 import os
 import pandas as pd
 import yfinance as yf
-from datetime import datetime, timedelta
-from requests import Session
-from requests_cache import CacheMixin, SQLiteCache
-from requests_ratelimiter import LimiterMixin, MemoryQueueBucket
-from pyrate_limiter import Duration, RequestRate, Limiter
+from datetime import datetime, time
+from pytz import timezone
 
+# Enable local caching
+yf.pdr_override()
 
-class CachedLimiterSession(CacheMixin, LimiterMixin, Session):
-    pass
-
-
-session = CachedLimiterSession(
-    limiter=Limiter(RequestRate(2, Duration.SECOND * 5)),  # max 2 requests per 5 seconds
-    bucket_class=MemoryQueueBucket,
-    backend=SQLiteCache("yfinance.cache"),
-)
 DATA_FOLDER = './.data'
+
+
+def is_market_open():
+    current_time = datetime.now().astimezone(timezone('US/Eastern')).time()
+
+    # Define NYSE trading hours
+    nyse_open_time = time(9, 30)
+    nyse_close_time = time(16, 0)
+
+    # Check if current time is within NYSE trading hours
+    return nyse_open_time <= current_time <= nyse_close_time
+
+
+def get_end(latest_date):
+    FRIDAY = 4
+    now = pd.Timestamp(datetime.today())
+    if is_market_open():
+        return now
+    d = pd.Timestamp(now.date())
+    delta = d.day_of_week - FRIDAY if d.day_of_week > FRIDAY else 0
+    return d - pd.Timedelta(days=delta)
 
 
 def get_price(ticker_symbol, period='200D'):
@@ -27,17 +38,17 @@ def get_price(ticker_symbol, period='200D'):
         local_data['Date'] = pd.to_datetime(local_data['Date'])
         local_data.set_index('Date', inplace=True)
         latest_date = local_data.index.max()
-        now = pd.Timestamp(datetime.now())
-        if latest_date < now:
-            recent = yf.download(ticker_symbol, start=latest_date, end=now)
+        end_date = get_end(latest_date)
+        if latest_date < end_date:
+            recent = yf.download(ticker_symbol, start=latest_date, end=end_date)
             union = pd.concat([local_data, recent])
             local_data = union.groupby(union.index).first()
             local_data.to_csv(data_file)
     else:
-        local_data = yf.download(ticker_symbol, period=period, session=session)
+        local_data = yf.download(ticker_symbol, period=period)
         local_data.to_csv(data_file)
 
-    ticker = yf.Ticker(ticker_symbol, session=session)
+    ticker = yf.Ticker(ticker_symbol)
     divs = ticker.get_dividends()
     end_date = datetime.today().strftime('%Y-%m-%d')
     start_date = (datetime.today() - pd.Timedelta(period)).strftime('%Y-%m-%d')
