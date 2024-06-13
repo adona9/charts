@@ -49,16 +49,17 @@ def get_price(ticker_symbol, period='200D'):
 
     ticker = yf.Ticker(ticker_symbol)
     divs = ticker.get_dividends()
-    end_date = datetime.today().strftime('%Y-%m-%d')
-    start_date = (datetime.today() - pd.Timedelta(period)).strftime('%Y-%m-%d')
-    divs = divs[(divs.index >= start_date) & (divs.index <= end_date)]
-
-    d2 = pd.DataFrame({
+    if len(divs) == 0:
+        return local_data
+    divs2 = pd.DataFrame({
         'Date': [d.tz_localize(None) for d in divs.keys()],
         'Dividend': divs.values
     })
-    d2.set_index('Date', inplace=True)
-    merged = pd.merge(local_data, d2, left_index=True, right_index=True, how='outer')
+    divs2.set_index('Date', inplace=True)
+    start_date = local_data.index[0]
+    end_date = local_data.index[-1]
+    divs3 = divs2[(divs2.index >= start_date) & (divs2.index <= end_date)]
+    merged = pd.merge(local_data, divs3, left_index=True, right_index=True, how='outer')
     return merged
 
 
