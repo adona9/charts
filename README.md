@@ -76,4 +76,15 @@ From: https://www.simplify.us/sites/default/files/2024-01/Simplify-Distribution-
 2024-03-18 300xULTY dividend $319
 2024-03-18 400xYMAX dividend $227
 2024-03-18 300xYMAG dividend $177
+2024-03-28 600xSVOL dividend $180
+2024-04-08 500xAMDY dividend $556 
+2024-04-08 500xOARK dividend $237
+2024-04-08 200xHYGW dividend $79
+2024-04-08 200xHYGH dividend $114
+2024-04-19 500xULTY dividend $708
+2024-05-01 700xSVOL dividend $210
+2024-05-08 700xAMDY dividend $357
+2024-05-08 600xOARK dividend $318
+2024-05-08 200xHYGH dividend $124
+2024-05-08 200xHYGW dividend $64
 ```
