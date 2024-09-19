@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <title>Market Breadth</title>
+        <style type="text/css" media="screen">
+            p {
+            width: 800px;
+            }
+        </style>
+    </head>
+<body>
+
+<div style="float: left;">
+    <h2>ADVANCE-DECLINE LINE</h2>
+    <p>
+    The <a href="https://stockcharts.com/h-sc/ui?s=%24NYAD&p=D&yr=0&mn=6&dy=0&id=p69663323142">Advance-Decline Line</a> tells us whether the 3,500 stocks on the NYSE are advancing with the 30 stocks on the $INDU and the 500 on the $SPX.  Look out for divergences in the peaks.  Typically, the AD line peaks before the Dow.
+    </p>
+    <img src="https://stockcharts.com/c-sc/sc?s=%24NYAD&p=D&yr=0&mn=6&dy=0&i=p69663323142&r=1665171424908" />
+</div>
+
+<div style="float: left;">
+    <h2>McCLENNAN SUMMATION INDEX</h2>
+    <p>
+    The <a href="https://stockcharts.com/h-sc/ui?s=%24NYSI&p=W&yr=2&mn=0&dy=0&id=p94523787238">McClennan Oscillator</a> is the difference between the 19 day and the 39 day EMA of the daily advance-decline line.  The McClennan Summation Index is the cumulative sum of each day's value of the oscillator. Crosses above and below the zero line suggest major market turning points.
+    </p>
+    <img src="https://stockcharts.com/c-sc/sc?s=%24NYSI&p=W&yr=2&mn=0&dy=0&i=p94523787238&r=1665170278188" />
+</div>
+
+<div style="float: left;">
+    <h2>NYSE NEW HIGH-NEW LOW INDEX</h2>
+    <p>
+    The <a href="https://stockcharts.com/h-sc/ui?s=%24NYHL&p=D&yr=3&mn=0&dy=0&id=p47080747904">NYSE New High-New Low Index</a> is the ratio of the number of stocks hitting new 52 week high over the ones hitting new 52 week lows.
+    1. Watch out for divergences, as they often suggest a turning point.
+    2. Extreme values are also valid indicators of tops or bottoms.
+    3. Crosses above and below the zero line reflect shifts in market psychology.
+    </p>
+    <img src="https://stockcharts.com/c-sc/sc?s=%24NYHL&p=D&yr=3&mn=0&dy=0&i=p47080747904&r=1665172437201" />
+</div>
+
+<div style="float: left;">
+    <h2>PERCENTAGE OF NYSE STOCKS ABOVE 200-DAY MA</h2>
+    <p>
+    When the 20-day MA of the <a href="https://stockcharts.com/h-sc/ui?s=%24NYA200R&p=D&yr=3&mn=0&dy=0&id=p81830263174">percentage of NYSE stocks above their 200-day MA</a> falls below 50, another red light should go on in the investor dashboard. Conversely, a cross above the 50 level means the bullish sentiment is spreading.
+    [In testing] Extreme values (around -50) of ROC(14) of the same indicator seem to coincide with bottoms in the S&P 500 index in times of high volatility. Conversely, when ROC(14) stays within a narrow range (e.g. between -20 and +20) it indicates a trending market.
+    </p>
+    <img src="https://stockcharts.com/c-sc/sc?s=%24NYA200R&p=D&yr=3&mn=0&dy=0&i=p81830263174&r=1665172633124" />
+</div>
+
+<div style="float: left;">
+    <h2>CBOE OPTIONS TOTAL PUT/CALL RATIO</h2>
+    <p>
+    The <a href="https://stockcharts.com/h-sc/ui?s=%24CPC&p=W&yr=3&mn=0&dy=0&id=p02395520099">CBOE options Put/Call ratio</a> is an indicator of market sentiment.  When its moving average moves above one, it signifies a diffused and generalized expectation (or fear) of lower prices. Extreme values may indicate market turning points. When the 20-day /EMA crosses above 1, it's bearish. When it crosses below 1, it's bullish.
+    </p>
+    <img src="https://stockcharts.com/c-sc/sc?s=%24CPC&p=W&yr=3&mn=0&dy=0&i=p02395520099&r=1665172751563" />
+</div>
+
+<div style="float: left;">
+    <pre>
+Rules:
+1. A/D line: recent (< 1 month) divergence -1, otherwise +1
+2. NYSI: -1 when < 0, +1 when > 0
+3. NYHL-EMA10: -1 when recent divergence, -1 when < 0, +1 when > 0
+4. NYA200R-EMA20: -1 when <50, +1 when > 50
+5. NYA200R-ROC14: +1 when within [-20, 20], -1 when outside of [-20, 20]
+6. CPC-20EMA: +1 when < 1, -1 when > 1
+
+Interpreting the score:
+N < 1 means all cash
+1 or 2 means 33% in
+2 or 3 means 66% in
+4 or above means 100% in
+    </pre>
+</div>
+
+</body>
+</html>
