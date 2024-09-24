@@ -18,9 +18,9 @@ def dividend_view(ticker, u_ticker, period):
                        yaxis='y1'),
         row=1, col=1)
 
-    sma_20 = price['Close'].rolling(window=20).mean()
+    sma_45 = price['Close'].rolling(window=45).mean()
     fig.add_trace(
-        go.Scatter(x=price.index, y=sma_20, mode='lines', name='20-day SMA', line=dict(color='orange'), opacity=.2),
+        go.Scatter(x=price.index, y=sma_45, mode='lines', name='45-day SMA', line=dict(color='orange'), opacity=.2),
         row=1, col=1)
 
     fig.add_trace(
@@ -77,12 +77,5 @@ def dividend_view(ticker, u_ticker, period):
 
 
 if __name__ == '__main__':
-    dividend_view('HYGH', 'HYG', period='180d')
     dividend_view('SVOL', '^VIX', period='200d')
-    dividend_view('AMDY', 'AMD', period='270d')
-    dividend_view('CONY', 'COIN', period='270d')
-    dividend_view('NVDY', 'NVDA', period='270d')
-    dividend_view('TSLY', 'TSLA', period='270d')
-    dividend_view('ULTY', '^NDX', period='270d')
-    dividend_view('YMAX', 'QQQ', period='270d')
-    dividend_view('YMAG', 'QQQ', period='270d')
+    dividend_view('TLTW', 'TLT', period='270d')

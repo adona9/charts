@@ -32,7 +32,7 @@ Securities:
 
 ### HYGH (y=8.9% trending up) or HYGW (y=13%) or TLTW (y=16% but beware of downtrend)
 ```
-BUY DATES:    Mar  1, Apr  1, May  1, Jun  1, Jun 30, Jul 31, Sep  2, Sep 30, Oct 31, Nov 29, Dec 18
+BUY DATES:    Mar  1, Apr  1, May  1, Jun  1, Jun 30, Jul 31, Sep  3, Sep 30, Oct 31, Nov 29, Dec 18
 Ex-D dates:   Mar  4, Apr  2, May  2, Jun  4, Jul  2, Aug  2, Sep  4, Oct  2, Nov  4, Dec  3, Dec 20
 Record dates: Mar  5, Apr  3, May  3, Jun  4, Jul  2, Aug  2, Sep  4, Oct  2, Nov  4, Dec  3, Dec 20
 Pay dates:    Mar 10, Apr  8, May  8, Jun 10, Jul  9, Aug  8, Sep 10, Oct  8, Nov  9, Dec 27, Jan  3
