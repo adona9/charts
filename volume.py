@@ -77,5 +77,10 @@ def dividend_view(ticker, u_ticker, period):
 
 
 if __name__ == '__main__':
-    dividend_view('SVOL', '^VIX', period='200d')
-    dividend_view('TLTW', 'TLT', period='270d')
+    dividend_view('JEPI', 'SPY', period='270d')
+    dividend_view('JEPQ', 'SPY', period='270d')
+    dividend_view('SPYI', 'SPY', period='270d')
+    dividend_view('IVR', 'SPY', period='270d')
+    dividend_view('QYLD', 'SPY', period='270d')
+    dividend_view('AGNC', 'SPY', period='270d')
+    dividend_view('SPHY', 'SPY', period='270d')
